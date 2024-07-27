@@ -10,7 +10,16 @@ export interface Product{
     title: string,
     thumbnail: string,
     discountPercentage: number,
-    price: number
+    price: number,
+    images: string[],
+    rating: number,
+    shippingInformation: string,
+    minimumOrderQuantity: number,
+    category: string,
+    brand: string,
+    warrantyInformation: string,
+    returnPolicy: string,
+    description: string
 }
 
 export type Category = {

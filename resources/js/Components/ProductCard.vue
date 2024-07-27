@@ -1,5 +1,5 @@
 <template>
-    <v-card class="rounded-lg">
+    <v-card class="rounded-lg" @click="router.get(route('products.show', {product: product.id}))">
         <v-img class="bg-grey-lighten-4" :src="product.thumbnail"></v-img>
         <v-card-text>
             <h3 style="font-family: 'Roboto', san-serif" >{{ product.title }}</h3>
@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { Product } from '@/types';
-
+import { router } from '@inertiajs/vue3';
 const props = defineProps<{product: Product}>()
 </script>
 

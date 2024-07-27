@@ -49,11 +49,8 @@ const category_groups = {
     <v-app>
         <v-app-bar flat class="border-b" color="grey-darken-4" style="padding-inline: 300px;">
             <h2 @click="router.get('/')" style="font-family: 'Playwrite AR', cursive;font-weight: 900;cursor:pointer">Trendy</h2>
-            <v-text-field class="ml-5 w-25" density="compact" label="Search..." hide-details single-line
-                variant="solo"></v-text-field>
             <v-spacer></v-spacer>
-            <v-btn @click="router.get(route('carts.index'))" class="ml-5" icon="mdi-cart"></v-btn>
-            <v-btn class="ml-5" icon="mdi-account"></v-btn>
+            <span>Need help?</span>
         </v-app-bar>
         <v-main style="padding-inline: 300px;" class="bg-grey-lighten-5 pb-15">
             <slot></slot>

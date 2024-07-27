@@ -77,7 +77,7 @@ defineProps<{
 
                 </h1>
                 <v-spacer></v-spacer>
-                <v-btn class="text-capitalize" variant="text" size="large">See All</v-btn>
+                <v-btn class="text-capitalize" variant="text" size="large" @click="router.get(route('essential-products'))">See All</v-btn>
             </div>
             <v-row>
                 <v-col cols="2" v-for="product in essentials" :key="product.id">
