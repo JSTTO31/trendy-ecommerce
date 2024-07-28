@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
+import HeadlessLayout from '@/Layouts/HeadlessLayout.vue';
 
 defineProps<{
     mustVerifyEmail?: boolean;
@@ -14,29 +14,22 @@ defineProps<{
 <template>
     <Head title="Profile" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Profile</h2>
-        </template>
+    <HeadlessLayout>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <UpdateProfileInformationForm
-                        :must-verify-email="mustVerifyEmail"
-                        :status="status"
-                        class="max-w-xl"
-                    />
-                </div>
-
-                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <UpdatePasswordForm class="max-w-xl" />
-                </div>
-
-                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <DeleteUserForm class="max-w-xl" />
-                </div>
-            </div>
+        <v-app-bar style="padding-inline: 300px;">
+            <v-app-bar-nav-icon @click="router.get('/')" icon="mdi-arrow-left">
+            </v-app-bar-nav-icon>
+            <v-app-bar-title>Profile</v-app-bar-title>
+            <v-spacer></v-spacer>
+            <v-btn variant="text" class="text-capitalize" prepend-icon="mdi-logout" @click="router.post(route('logout'))">Logout</v-btn>
+        </v-app-bar>
+        <div class="py-10">
+            <UpdateProfileInformationForm
+                :must-verify-email="mustVerifyEmail"
+                :status="status"
+            />
+            <UpdatePasswordForm class="mt-5" />
+            <DeleteUserForm class="mt-5" />
         </div>
-    </AuthenticatedLayout>
+    </HeadlessLayout>
 </template>

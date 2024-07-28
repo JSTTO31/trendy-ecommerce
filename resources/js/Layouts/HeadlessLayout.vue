@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { router, usePage } from '@inertiajs/vue3';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 const category_groups = {
   "beauty and personalCare": [
     "beauty",
@@ -42,11 +42,8 @@ const category_groups = {
   ]
 };
 
-const isAuthenticated = computed(() => usePage().props.isAuthenticated)
-const cart_items = computed(() => usePage().props.cart_items_count)
 const success = computed(() => usePage().props.flash.success);
 const information = computed(() => usePage().props.flash.information);
-const errors = computed(() => usePage().props.errors)
 const showSnackbar = ref(false)
 
 router.on('success', (event) => {
@@ -61,32 +58,6 @@ router.on('success', (event) => {
 
 <template>
     <v-app>
-        <v-app-bar flat class="border-b" color="grey-darken-4" style="padding-inline: 300px;">
-            <h2 @click="router.get('/')" style="font-family: 'Playwrite AR', cursive;font-weight: 900;cursor:pointer">Trendy</h2>
-            <v-text-field class="ml-10" density="compact" label="Search..." hide-details single-line
-                variant="solo"></v-text-field>
-            <v-spacer></v-spacer>
-            <div v-if="isAuthenticated" class="d-flex align-center">
-                <v-badge :model-value="cart_items > 0" :content="cart_items" color="red">
-                    <v-btn @click="router.get(route('carts.index'))" class="ml-5" icon="mdi-cart"></v-btn>
-                </v-badge>
-                <v-menu class="" location="bottom right">
-                    <template #activator="{props}">
-                        <v-btn v-bind="props" class="ml-5" icon="mdi-account" ></v-btn>
-                    </template>
-                    <v-list>
-                        <v-list-item class="pr-15" @click="router.get(route('profile.edit'))" prepend-icon="mdi-account-outline">Profile</v-list-item>
-                        <v-list-item class="pr-15" @click="router.post(route('logout'))" prepend-icon="mdi-logout">Logout</v-list-item>
-                    </v-list>
-                </v-menu>
-
-            </div>
-            <div class="d-flex" style="gap: 5px" v-else>
-                <v-btn @click="router.get(route('login'))" class="text-capitalize">Login</v-btn>
-                <v-divider vertical></v-divider>
-                <v-btn @click="router.get(route('register'))" class="text-capitalize">Register</v-btn>
-            </div>
-        </v-app-bar>
         <v-main style="padding-inline: 300px;" class="bg-grey-lighten-5 pb-15">
             <slot></slot>
         </v-main>

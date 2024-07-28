@@ -10,8 +10,12 @@ use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+        $products = Product::cursorPaginate(20);
 
+        return Inertia::render('Se', [
+            'products' => $products,
+        ]);
     }
 
     public function show(Request $request, Product $product){

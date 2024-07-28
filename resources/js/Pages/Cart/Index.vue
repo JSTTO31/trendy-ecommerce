@@ -5,6 +5,7 @@ import { Head, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import CheckoutForm from '@/Components/CheckoutForm.vue';
+import AuthenticationLayout from '@/Layouts/AuthenticationLayout.vue';
 
 const cart_items = computed(() => usePage().props.cart_items)
 const page = ref(parseInt(route().queryParams.page) || 1)
