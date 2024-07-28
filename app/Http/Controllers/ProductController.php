@@ -11,9 +11,9 @@ use Inertia\Inertia;
 class ProductController extends Controller
 {
     public function index(Request $request){
-        $products = Product::cursorPaginate(20);
+        $products = Product::where('title', 'like', '%' . $request->search . '%')->cursorPaginate(20);
 
-        return Inertia::render('Se', [
+        return Inertia::render('Product/Index', [
             'products' => $products,
         ]);
     }

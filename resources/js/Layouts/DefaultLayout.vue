@@ -46,8 +46,14 @@ const isAuthenticated = computed(() => usePage().props.isAuthenticated)
 const cart_items = computed(() => usePage().props.cart_items_count)
 const success = computed(() => usePage().props.flash.success);
 const information = computed(() => usePage().props.flash.information);
-const errors = computed(() => usePage().props.errors)
 const showSnackbar = ref(false)
+
+const search_text = ref(route().queryParams.seach || '');
+
+function search(){
+    router.get(route('products.index') + '?search=' + search_text.value);
+}
+
 
 router.on('success', (event) => {
 
@@ -57,13 +63,14 @@ router.on('success', (event) => {
 
 })
 
+
 </script>
 
 <template>
     <v-app>
         <v-app-bar flat class="border-b" color="grey-darken-4" style="padding-inline: 300px;">
             <h2 @click="router.get('/')" style="font-family: 'Playwrite AR', cursive;font-weight: 900;cursor:pointer">Trendy</h2>
-            <v-text-field class="ml-10" density="compact" label="Search..." hide-details single-line
+            <v-text-field class="ml-10" density="compact" label="Search..." hide-details single-line v-model="search_text" @keyup.enter="search"
                 variant="solo"></v-text-field>
             <v-spacer></v-spacer>
             <div v-if="isAuthenticated" class="d-flex align-center">

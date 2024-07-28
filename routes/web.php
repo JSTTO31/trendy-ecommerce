@@ -25,6 +25,7 @@ Route::get('/products/categories/{category}', [CategoryController::class, 'show'
 
 
 Route::controller(ProductController::class)->group(function(){
+    Route::get('/products', 'index')->name('products.index');
     Route::get('/products/{product}', 'show')->name('products.show');
 });
 
