@@ -22,6 +22,16 @@ export interface Product{
     description: string
 }
 
+export interface OrderItem{
+    id: number,
+    user_id: number,
+    product_id: number,
+    order_id: number,
+    quantity: number,
+    price: number
+    product: Product
+}
+
 export type Category = {
     id: number,
     name: string,
@@ -29,9 +39,29 @@ export type Category = {
     image: string,
 }
 
+export type Message = {
+    title: string,
+    sentence: string,
+}
+
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User;
     };
+    flash: {
+        success?: Message,
+        information?: string,
+    },
+    isAuthenticated: boolean,
+    cart_items_count: number,
+    cart_items: {
+        data: OrderItem[],
+        "next_page_url": string | null,
+        "path": string,
+        "per_page": number,
+        "prev_page_url": string | null,
+        "to": number,
+        "total": number
+    }
 };

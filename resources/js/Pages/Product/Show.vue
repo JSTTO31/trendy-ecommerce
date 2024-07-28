@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import { Product, User } from '@/types';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, router, useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 type Review = {
     id: number,
@@ -29,16 +29,14 @@ const props = defineProps<{
     },
     star_counts: Star[],
     review_counts: number,
-    query: any
+    query: any,
 }>()
 
 const page = ref(parseInt(props.query.page) || 1)
 const sortBy = ref(props.query.sortBy || 'latest')
 
-
 const currentImage = ref(0)
 const price = computed(() => (props.product.price - (props.product.discountPercentage / props.product.price)).toFixed(2))
-const stocks = ref(1)
 const numberOfStocks = Math.floor(Math.random() * 9999)
 
 function filter(query: any){
@@ -49,9 +47,20 @@ function filter(query: any){
     })
 }
 
+const form = useForm({
+    quantity: 1
+})
+
+function addToCart(){
+    form.post(route('carts.store', {product: props.product.id}), {
+        onFinish(){
+            form.reset();
+        }
+    })
+}
+
 </script>
 <template>
-
     <Head :title="product.title"></Head>
     <DefaultLayout>
         <v-card class="mt-5  " height="600">
@@ -89,7 +98,7 @@ function filter(query: any){
                     </div>
                     <h1 style="font-family: 'Roboto', san-serif">
                         <span class="mr-3">&#x24;{{ price }}</span>
-                        <strike class="text-grey-darken-1">&#x24;{{ product.price }}</strike>
+                        <del class="text-grey-darken-1">&#x24;{{ product.price }}</del>
                     </h1>
                     <v-chip class="rounded-lg mt-5" color="red" size="large" prepend-icon="mdi-truck-fast">{{
                         product.shippingInformation }}</v-chip>
@@ -98,13 +107,13 @@ function filter(query: any){
                         <label for="">Number of stocks</label>
                         <div class="w-33">
                             <v-text-field hide-details density="comfortable" readonly class="text-right mt-2"
-                                :model-value="stocks" variant="outlined" type="number">
+                                :model-value="form.quantity" variant="outlined" type="number">
                                 <template #prepend>
-                                    <v-btn @click="stocks--" :disabled="stocks < 1" icon="mdi-minus" class="rounded"
-                                        variant="flat" color="grey-darken-3"></v-btn>
+                                    <v-btn @click.stop="form.quantity--" :disabled="form.quantity <= 1" icon="mdi-minus" class="rounded"
+                                    variant="flat" color="grey-darken-3"></v-btn>
                                 </template>
                                 <template #append>
-                                    <v-btn @click="stocks++" :disabled="stocks >= product.minimumOrderQuantity"
+                                    <v-btn @click="form.quantity++" :disabled="form.quantity >= product.minimumOrderQuantity"
                                         icon="mdi-plus" class="rounded" variant="flat" color="grey-darken-3"></v-btn>
                                 </template>
                             </v-text-field>
@@ -113,6 +122,7 @@ function filter(query: any){
                     <v-divider class="my-5"></v-divider>
                     <div class="d-flex align-center" style="gap: 15px;">
                         <v-btn flat class="text-capitalize" prepend prepend-icon="mdi-cart" size="x-large"
+                            @click="addToCart"
                             color="grey-lighten-2">Add to
                             Cart</v-btn>
                         <v-btn flat class="text-capitalize" prepend prepend-icon="mdi-briefcase-outline" size="x-large"
@@ -198,6 +208,7 @@ function filter(query: any){
                             <p class="mt-5">{{ review.comment }}</p>
                         </div>
                     </v-card>
+
                     <v-pagination color="grey-darken-4" @update:model-value="$value => filter({...query, page: $value})" :length="Math.ceil(reviews.total / reviews.per_page)" v-model="page"></v-pagination>
                 </v-container>
             </v-card-text>
@@ -207,4 +218,6 @@ function filter(query: any){
 
 
 
-<style scoped></style>
+<style scoped>
+
+</style>

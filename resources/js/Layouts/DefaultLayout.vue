@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
-
+import { router, usePage } from '@inertiajs/vue3';
+import { computed, ref, watch } from 'vue';
 const category_groups = {
   "beauty and personalCare": [
     "beauty",
@@ -42,6 +42,20 @@ const category_groups = {
   ]
 };
 
+const isAuthenticated = computed(() => usePage().props.isAuthenticated)
+const cart_items = computed(() => usePage().props.cart_items_count)
+const success = computed(() => usePage().props.flash.success);
+const information = computed(() => usePage().props.flash.information);
+const errors = computed(() => usePage().props.errors)
+const showSnackbar = ref(false)
+
+router.on('success', (event) => {
+
+    if(event.detail.page.props.flash.information){
+        showSnackbar.value = true
+    }
+
+})
 
 </script>
 
@@ -49,11 +63,21 @@ const category_groups = {
     <v-app>
         <v-app-bar flat class="border-b" color="grey-darken-4" style="padding-inline: 300px;">
             <h2 @click="router.get('/')" style="font-family: 'Playwrite AR', cursive;font-weight: 900;cursor:pointer">Trendy</h2>
-            <v-text-field class="ml-5 w-25" density="compact" label="Search..." hide-details single-line
+            <v-text-field class="ml-10" density="compact" label="Search..." hide-details single-line
                 variant="solo"></v-text-field>
             <v-spacer></v-spacer>
-            <v-btn @click="router.get(route('carts.index'))" class="ml-5" icon="mdi-cart"></v-btn>
-            <v-btn class="ml-5" icon="mdi-account"></v-btn>
+            <div v-if="isAuthenticated" class="d-flex align-center">
+                <v-badge :model-value="cart_items > 0" :content="cart_items" color="red">
+                    <v-btn @click="router.get(route('carts.index'))" class="ml-5" icon="mdi-cart"></v-btn>
+                </v-badge>
+                <v-btn class="ml-5" icon="mdi-account" ></v-btn>
+
+            </div>
+            <div class="d-flex" style="gap: 5px" v-else>
+                <v-btn @click="router.get(route('login'))" class="text-capitalize">Login</v-btn>
+                <v-divider vertical></v-divider>
+                <v-btn @click="router.get(route('register'))" class="text-capitalize">Register</v-btn>
+            </div>
         </v-app-bar>
         <v-main style="padding-inline: 300px;" class="bg-grey-lighten-5 pb-15">
             <slot></slot>
@@ -83,11 +107,49 @@ const category_groups = {
                 </v-col>
             </v-container>
         </v-footer>
+        <v-snackbar v-model="showSnackbar">
+            {{ information }}
+            <template v-slot:actions>
+                <v-btn
+                color="pink"
+                variant="text"
+                @click="showSnackbar = false"
+                >
+                Close
+                </v-btn>
+            </template>
+        </v-snackbar>
+        <Transition name="slide-fade">
+            <v-alert prominent :key="(Math.random()*10).toString()" class="alert pa-5 rounded-lg" closable width="480" icon="mdi-party-popper" color="success" v-if="!!success">
+                <h3>{{ success.title }}</h3>
+                <p>{{ success.sentence }}</p>
+            </v-alert>
+        </Transition>
     </v-app>
 </template>
 
 <style scoped>
 body{
     background-color: red;
+}
+
+.alert{
+    position: fixed;
+    left: 25px;
+    bottom: 25px;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.25s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
 }
 </style>

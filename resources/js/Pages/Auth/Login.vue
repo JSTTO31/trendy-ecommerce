@@ -3,7 +3,7 @@ import Checkbox from '@/Components/Checkbox.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import AuthenticationLayout from '@/Layouts/AuthenticationLayout.vue';
 import { ref } from 'vue';
-
+import { router } from '@inertiajs/vue3';
 defineProps<{
     canResetPassword?: boolean;
     status?: string;
@@ -32,15 +32,8 @@ const submit = () => {
 
         <Head title="Log in" />
 
-        <v-container style="height: 700px;" class="pt-10">
-            <v-row>
-                <v-col cols="7" class="d-flex flex-column pa-15">
-                    <h1>Welcome back, Trend Enthusiast! Discover your new favorites.</h1>
-                    <v-avatar class="rounded-0 ml-auto" size="300">
-                        <v-img :src="image"></v-img>
-                    </v-avatar>
-                </v-col>
-                <v-col cols="5" class="pa-15">
+        <v-container style="height: 750px;" class="pt-5 d-flex justify-center">
+                <v-col cols="6" class="px-0">
                     <v-card class="pa-5">
                         <h2 class="mb-5">Login</h2>
                         <v-form @submit.prevent="submit">
@@ -73,7 +66,6 @@ const submit = () => {
                         </v-form>
                     </v-card>
                 </v-col>
-            </v-row>
         </v-container>
     </AuthenticationLayout>
 </template>

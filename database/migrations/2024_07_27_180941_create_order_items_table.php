@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
             $table->foreignId('product_id');
-            $table->morphs('order_itemable');
+            $table->foreignId('order_id')->nullable();
+            $table->integer('quantity');
+            $table->decimal('price');
             $table->timestamps();
         });
     }

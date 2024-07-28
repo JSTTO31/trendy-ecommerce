@@ -28,8 +28,11 @@ Route::controller(ProductController::class)->group(function(){
     Route::get('/products/{product}', 'show')->name('products.show');
 });
 
-Route::controller(CartController::class)->middleware(['auth'])->group(function(){
-    Route::get('/carts', 'index')->name('carts.index');
+Route::controller(CartController::class)->prefix('cart/items')->middleware(['auth'])->group(function(){
+    Route::get('', 'index')->name('carts.index');
+    Route::post('/{product}', 'store')->name('carts.store');
+    Route::put('/{product}/item/{orderItem}', 'update')->name('carts.update');
+    Route::delete('/{product}/item/{orderItem}', 'destroy')->name('carts.destroy');
 });
 
 Route::middleware('auth')->group(function () {
