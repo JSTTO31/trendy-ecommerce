@@ -3,6 +3,8 @@
 use App\Http\Controllers\BestProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductElectronicController;
 use App\Http\Controllers\ProductEssentialController;
@@ -15,7 +17,7 @@ Route::get('/', WelcomeController::class);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('home');
 
 Route::get('/best-products', BestProductController::class)->name('best-products');
 Route::get('/electronic-products', ProductElectronicController::class)->name('electronic-products');
@@ -23,6 +25,11 @@ Route::get('/essential-products', ProductEssentialController::class)->name('esse
 Route::get('/products/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/products/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 
+
+Route::controller(OrderController::class)->middleware('auth')->group(function(){
+    Route::get('/orders', 'index')->name('orders.index');
+    Route::get('/orders/{order}', 'show')->name('orders.show');
+});
 
 Route::controller(ProductController::class)->group(function(){
     Route::get('/products', 'index')->name('products.index');
@@ -34,6 +41,13 @@ Route::controller(CartController::class)->prefix('cart/items')->middleware(['aut
     Route::post('/{product}', 'store')->name('carts.store');
     Route::put('/{product}/item/{orderItem}', 'update')->name('carts.update');
     Route::delete('/{product}/item/{orderItem}', 'destroy')->name('carts.destroy');
+});
+
+Route::controller(CheckoutController::class)->middleware(['auth'])->group(function(){
+    Route::get('/checkout', 'index')->name('checkout.index');
+    Route::post('/checkout', 'checkout')->name('checkout.create');
+    Route::get('/checkout/success', 'success')->name('checkout.success');
+    Route::get('/checkout/cancel', 'cancel')->name('checkout.cancel');
 });
 
 Route::middleware('auth')->group(function () {

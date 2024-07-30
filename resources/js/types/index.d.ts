@@ -32,6 +32,16 @@ export interface OrderItem{
     product: Product
 }
 
+
+export interface Order{
+    id: number,
+    user_id: number,
+    price: number
+    status: string
+    updated_at: string,
+    created_at:string
+}
+
 export type Category = {
     id: number,
     name: string,

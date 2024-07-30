@@ -1,5 +1,5 @@
 <template>
-    <v-card class="pa-5 border" flat>
+    <v-card class="pa-5 border" flat v-if="usePage().props.cart_items.total > 0">
         <h3 class="text-capitalize text-grey-darken-4">Order Summary</h3>
         <v-container class="pa-0 mt-5">
             <v-row>
@@ -34,7 +34,7 @@
                 </v-text-field>
             </div>
 
-            <v-btn size="large" class="mt-10" block color="black">Checkout</v-btn>
+            <v-btn size="large" class="mt-10" block color="black" @click="router.replace(route('checkout.index'))">Checkout</v-btn>
         </v-container>
     </v-card>
 </template>
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
-
+import { router } from '@inertiajs/vue3';
 const discount = computed(() => usePage().props.cart_items.data.reduce((carrier, next) => {
     const discount = (next.product.discountPercentage / next.product.price);
     carrier += discount

@@ -2,6 +2,7 @@
 import ProductCard from '@/Components/ProductCard.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import { Product } from '@/types';
+import { Head } from '@inertiajs/vue3';
 
 defineProps<{
     products: {
@@ -20,6 +21,7 @@ defineProps<{
 </script>
 
 <template>
+    <Head title="Explore Our Best Sellers"></Head>
     <DefaultLayout>
         <v-container class="px-0">
             <div class="d-flex align-center">

@@ -48,7 +48,7 @@ const success = computed(() => usePage().props.flash.success);
 const information = computed(() => usePage().props.flash.information);
 const showSnackbar = ref(false)
 
-const search_text = ref(route().queryParams.seach || '');
+const search_text = ref(route().queryParams?.search || '');
 
 function search(){
     router.get(route('products.index') + '?search=' + search_text.value);
@@ -83,6 +83,7 @@ router.on('success', (event) => {
                     </template>
                     <v-list>
                         <v-list-item class="pr-15" @click="router.get(route('profile.edit'))" prepend-icon="mdi-account-outline">Profile</v-list-item>
+                        <v-list-item class="pr-15" @click="router.get(route('orders.index'))" prepend-icon="mdi-cart-check">Purchase</v-list-item>
                         <v-list-item class="pr-15" @click="router.post(route('logout'))" prepend-icon="mdi-logout">Logout</v-list-item>
                     </v-list>
                 </v-menu>
@@ -94,7 +95,7 @@ router.on('success', (event) => {
                 <v-btn @click="router.get(route('register'))" class="text-capitalize">Register</v-btn>
             </div>
         </v-app-bar>
-        <v-main style="padding-inline: 300px;" class="bg-grey-lighten-5 pb-15">
+        <v-main style="padding-inline: 300px;" class="bg-grey-lighten-5 h-100 pb-15">
             <slot></slot>
         </v-main>
         <v-footer color="black" class="py-15 " style="padding-inline: 300px;" >

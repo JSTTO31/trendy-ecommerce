@@ -21,6 +21,7 @@
         "vue-tsc": "^2.0.24"
     },
     "dependencies": {
+        "@stripe/stripe-js": "^4.1.0",
         "vuetify": "^3.6.13"
     }
 }

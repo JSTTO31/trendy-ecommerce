@@ -15,7 +15,6 @@ defineProps<{
     <Head title="Profile" />
 
     <HeadlessLayout>
-
         <v-app-bar style="padding-inline: 300px;">
             <v-app-bar-nav-icon @click="router.get('/')" icon="mdi-arrow-left">
             </v-app-bar-nav-icon>
